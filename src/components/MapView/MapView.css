@@ -1,0 +1,11 @@
+
+.leaflet-container {
+  height: calc(100vh - 60px);
+}
+
+.error {
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  color: #ff0000;
+}
