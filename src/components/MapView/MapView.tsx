@@ -3,7 +3,7 @@ import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 import { LatLngTuple } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
-import { Recenter } from "../Recenter/MapView";
+import { Recenter } from "../Recenter/Recenter";
 
 export const MapView = () => {
   const [currentLocation, setCurrentLocation] =
