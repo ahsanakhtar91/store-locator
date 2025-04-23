@@ -1,9 +1,16 @@
 import "./MapView.css";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
-import { LatLngTuple } from "leaflet";
+import { LatLngTuple, Icon } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import { Recenter } from "../Recenter/Recenter";
+import markerIconPng from "leaflet/dist/images/marker-icon.png";
+
+const currentLocationIcon = new Icon({
+  iconUrl: markerIconPng,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
 
 export const MapView = () => {
   const [currentLocation, setCurrentLocation] =
@@ -40,15 +47,15 @@ export const MapView = () => {
       {/* Recenters the map on current location */}
       <Recenter position={currentLocationLatLng} />
       {/* Rendering the Marker to represent the current location on the map */}
-      <Marker position={currentLocationLatLng}>
+      <Marker position={currentLocationLatLng} icon={currentLocationIcon}>
         <Popup>Your location</Popup>
       </Marker>
       {/* Showing a Circle around the current location to represent how accurate it is */}
-      <Circle
+      {/* <Circle
         center={currentLocationLatLng}
         radius={currentLocation?.coords.accuracy || 100}
         pathOptions={{ weight: 1 }}
-      />
+      /> */}
     </MapContainer>
   );
 };
