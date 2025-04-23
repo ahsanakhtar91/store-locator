@@ -4,17 +4,16 @@ import { useCallback, useEffect, useState } from "react";
 import { LatLngTuple, Icon } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import { Recenter } from "../Recenter/Recenter";
-import markerIconPng from "leaflet/dist/images/marker-icon.png";
-import markerIconShadow from "leaflet/dist/images/marker-shadow.png";
+import markerIconPng from "../../icons/pinLocation.svg";
 import { Button } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocation } from "@fortawesome/free-solid-svg-icons";
 
 const currentLocationIcon = new Icon({
   iconUrl: markerIconPng,
-  shadowUrl: markerIconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
+  popupAnchor: [0, -12],
+  iconSize: [24, 24],
+  iconAnchor: [12, 12],
 });
 
 export const MapView = () => {
@@ -61,7 +60,7 @@ export const MapView = () => {
       <Circle
         center={currentLocationLatLng}
         radius={currentLocation?.coords.accuracy || 100}
-        pathOptions={{ weight: 1 }}
+        pathOptions={{ weight: 0 }}
       />
       {/* A Button for centering the map to the current location */}
       <Button
