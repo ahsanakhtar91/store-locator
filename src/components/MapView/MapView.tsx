@@ -4,13 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 import { LatLngTuple, Icon } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import { Recenter } from "../Recenter/Recenter";
-import markerIconPng from "../../icons/pinLocation.svg";
+import pinLocationIcon from "../../icons/pinLocation.svg";
 import { Button } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocation } from "@fortawesome/free-solid-svg-icons";
 
 const currentLocationIcon = new Icon({
-  iconUrl: markerIconPng,
+  iconUrl: pinLocationIcon,
   popupAnchor: [0, -12],
   iconSize: [24, 24],
   iconAnchor: [12, 12],
