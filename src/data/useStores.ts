@@ -14,7 +14,7 @@ export const useStores = (): Store[] => {
     {
       id: 2,
       name: "iFocus | The Exclusive Apple Store",
-      address: "Shop # 263, 2nd Floor, Centaurus Mall, Islamabad, Pakistan",
+      address: "Office #3, Ground Floor, Azeem Mention, AKM Fazl-ul-Haq Rd, Islamabad, Pakistan",
       latitude: 33.7157856,
       longitude: 73.0697166,
       products: ["Laptop", "Macbook", "Smartwatch", "Camera"],
