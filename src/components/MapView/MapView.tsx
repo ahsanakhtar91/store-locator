@@ -1,13 +1,18 @@
 import "./MapView.css";
 import "leaflet/dist/leaflet.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LatLngTuple, Icon } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import { Recenter } from "../Recenter/Recenter";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import markerIconShadow from "leaflet/dist/images/marker-shadow.png";
+import { Button } from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocation } from "@fortawesome/free-solid-svg-icons";
 
 const currentLocationIcon = new Icon({
   iconUrl: markerIconPng,
+  shadowUrl: markerIconShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 });
@@ -23,7 +28,7 @@ export const MapView = () => {
 
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const findCurrentLocation = useCallback(() => {
     const geolocation = navigator.geolocation;
     if (!geolocation) {
       setError("navigator.geolocation: Geolocation is not supported!");
@@ -35,6 +40,8 @@ export const MapView = () => {
       { enableHighAccuracy: true }
     );
   }, []);
+
+  useEffect(() => findCurrentLocation(), [findCurrentLocation]);
 
   return error ? (
     <div className="error">{error}</div>
@@ -48,14 +55,21 @@ export const MapView = () => {
       <Recenter position={currentLocationLatLng} />
       {/* Rendering the Marker to represent the current location on the map */}
       <Marker position={currentLocationLatLng} icon={currentLocationIcon}>
-        <Popup>Your location</Popup>
+        <Popup>Your Location</Popup>
       </Marker>
       {/* Showing a Circle around the current location to represent how accurate it is */}
-      {/* <Circle
+      <Circle
         center={currentLocationLatLng}
         radius={currentLocation?.coords.accuracy || 100}
         pathOptions={{ weight: 1 }}
-      /> */}
+      />
+      {/* A Button for centering the map to the current location */}
+      <Button
+        className="absolute icon-button top-right"
+        onClick={findCurrentLocation}
+      >
+        <FontAwesomeIcon icon={faLocation} style={{ width: 20, height: 20 }} />
+      </Button>
     </MapContainer>
   );
 };
