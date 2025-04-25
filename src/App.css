@@ -8,10 +8,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .app-name {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
 }

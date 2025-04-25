@@ -71,7 +71,7 @@ export const MapView = ({ stores }: { stores: Store[] }) => {
 
   return (
     <>
-      <div className="error">{error}</div>
+      {error && <div className="error">{error}</div>}
       <MapContainer
         center={currentLocationCoords ?? regionPakistan}
         zoom={currentLocationCoords ? 15 : 6}
