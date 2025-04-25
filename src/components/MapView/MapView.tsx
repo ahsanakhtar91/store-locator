@@ -15,8 +15,12 @@ import pinLocationIcon from "../../icons/pinLocation.svg";
 import { Button } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocation } from "@fortawesome/free-solid-svg-icons";
-import { getCurrentLocation, getStoreMarkerIcon } from "../../utils/utils";
-import { Store } from "../../data/types";
+import {
+  getCurrentLocation,
+  getStoreMarkerIcon,
+  haversine,
+} from "../../utils/utils";
+import { Store, StoreWithDistance } from "../../data/types";
 import { StoreMarker } from "../StoreMarker/StoreMarker";
 
 const currentLocationIcon = new Icon({
@@ -36,10 +40,9 @@ export const MapView = ({
   stores: Store[];
   selectedProduct?: string;
 }) => {
-  const [currentLocation, setCurrentLocation] =
-    useState<GeolocationPosition | null>(null);
-
-  const [locationError, setLocationError] = useState<string | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<GeolocationPosition>();
+  const [locationError, setLocationError] = useState<string>();
+  const [nearestStoreCoords, setNearestStoreCoords] = useState<LatLngTuple>();
 
   const currentLocationCoords: LatLngTuple | null = useMemo(
     () =>
@@ -51,7 +54,6 @@ export const MapView = ({
         : null,
     [currentLocation]
   );
-
   const currentLocationAccuracy = useMemo(
     () => currentLocation?.coords.accuracy || 100,
     [currentLocation?.coords.accuracy]
@@ -61,13 +63,39 @@ export const MapView = ({
     getCurrentLocation(
       (position) => setCurrentLocation(position),
       (error) => {
-        setCurrentLocation(null);
+        setCurrentLocation(undefined);
         setLocationError(error);
       }
     );
   }, []);
 
+  // Move to the user's current location when the component mounts for the first time
   useEffect(() => moveToCurrentLocation(), [moveToCurrentLocation]);
+
+  const nearestStore: StoreWithDistance | null = useMemo(() => {
+    if (!currentLocationCoords || !selectedProduct) return null;
+
+    const storesHavingProduct = stores.filter((s) =>
+      s.products?.includes(selectedProduct)
+    );
+
+    if (!storesHavingProduct.length) {
+      return null;
+    }
+
+    const storesSortedByDistance = storesHavingProduct
+      .map((s) => ({
+        ...s,
+        distance: parseFloat(
+          haversine(currentLocationCoords, [s.latitude, s.longitude]).toFixed(1)
+        ),
+      }))
+      .sort((a, b) => a.distance - b.distance);
+
+    return storesSortedByDistance[0];
+  }, [currentLocationCoords, selectedProduct]);
+
+  console.log(nearestStore);
 
   return (
     <>
@@ -85,7 +113,7 @@ export const MapView = ({
         <Button
           className="absolute icon-button top-right"
           onClick={moveToCurrentLocation}
-          disabled={!currentLocation}
+          disabled={!currentLocationCoords}
         >
           <FontAwesomeIcon
             icon={faLocation}
@@ -95,7 +123,7 @@ export const MapView = ({
 
         {currentLocationCoords && (
           <>
-            {/* Rendering the Marker to represent the current location on the map */}
+            {/* Rendering a Marker to represent the current location on the map with a custom blue cirlce svg icon (copied from https://www.openstreetmap.org) */}
             <Marker position={currentLocationCoords} icon={currentLocationIcon}>
               <Tooltip direction="bottom">Your Location</Tooltip>
               <Popup>
@@ -104,8 +132,8 @@ export const MapView = ({
                 Accuracy: {currentLocationAccuracy?.toFixed(1)} meters
               </Popup>
             </Marker>
-            {/* Recenters the map on the provided position */}
-            <Recenter position={currentLocationCoords} />
+            {/* Recenters the map on the provided position (either nearest store location or the user's current location) */}
+            <Recenter position={nearestStoreCoords ?? currentLocationCoords} />
             {/* Showing a Circle around the current location to represent how accurate it is */}
             <Circle
               center={currentLocationCoords}

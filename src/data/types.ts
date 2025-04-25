@@ -6,3 +6,5 @@ export type Store = {
   longitude: number;
   products: string[];
 };
+
+export type StoreWithDistance = Store & { distance: number };
