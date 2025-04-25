@@ -5,9 +5,9 @@ import { useStores } from "./data/useStores";
 export default function App() {
   const stores = useStores();
   return (
-    <div>
-      <div className="top">
-        <div className="heading">Store Locator</div>
+    <div className="root">
+      <div className="header">
+        <div className="app-name">Store Locator</div>
       </div>
       <MapView stores={stores} />
     </div>

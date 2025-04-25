@@ -1,11 +1,17 @@
-.top {
-  height: 60px;
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 10px;
 }
 
-.heading {
+.app-name {
   font-size: 18px;
   font-weight: 600;
 }
