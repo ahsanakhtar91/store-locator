@@ -122,9 +122,12 @@ export const MapView = ({
           </>
         )}
 
-        {/* Rendering the Store Markers to represent the actual store locations on the map */}
+        {/* Rendering the Store Markers to represent the actual store locations on the map (with different colors based on product availability) */}
         {stores.map((store) => {
-          const icon = getStoreMarkerIcon("red");
+          const storeHasProduct =
+            selectedProduct && store.products.includes(selectedProduct);
+
+          const icon = getStoreMarkerIcon(storeHasProduct ? "yellow" : "red");
           return (
             <Marker
               key={store.id}

@@ -1,7 +1,11 @@
 import { Icon } from "leaflet";
-import markerShadowUrl from "leaflet/dist/images/marker-shadow.png"
+import markerShadowUrl from "leaflet/dist/images/marker-shadow.png";
 
-export const getStoreMarkerIcon = (color: "green" | "yellow" | "red") => {
+// "yellow": icon/marker for the store where product IS available
+// "green": icon/marker for the NEAREST store where product IS available
+// "red": icon/marker for the store where product is NOT available
+
+export const getStoreMarkerIcon = (color: "yellow" | "green" | "red") => {
   const url = `https://maps.gstatic.com/mapfiles/ms2/micons/${color}-dot.png`;
   return new Icon({
     iconUrl: url,
