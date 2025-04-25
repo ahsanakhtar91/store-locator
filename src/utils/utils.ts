@@ -1,10 +1,25 @@
 import { Icon } from "leaflet";
 import markerShadowUrl from "leaflet/dist/images/marker-shadow.png";
 
+export const getCurrentLocation = (
+  onSuccess: (position: GeolocationPosition) => void,
+  onError: (message: string) => void
+) => {
+  const geolocation = navigator.geolocation;
+  if (!geolocation) {
+    onError("Geolocation error: Geolocation is not supported!");
+    return;
+  }
+  geolocation.getCurrentPosition(
+    (postion) => onSuccess(postion),
+    (e) => onError(`Geolocation error: ${e.message}`),
+    { enableHighAccuracy: true }
+  );
+};
+
 // "yellow": icon/marker for the store where product IS available
 // "green": icon/marker for the NEAREST store where product IS available
 // "red": icon/marker for the store where product is NOT available
-
 export const getStoreMarkerIcon = (color: "yellow" | "green" | "red") => {
   const url = `https://maps.gstatic.com/mapfiles/ms2/micons/${color}-dot.png`;
   return new Icon({

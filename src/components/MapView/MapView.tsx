@@ -15,8 +15,9 @@ import pinLocationIcon from "../../icons/pinLocation.svg";
 import { Button } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocation } from "@fortawesome/free-solid-svg-icons";
-import { getStoreMarkerIcon } from "../../utils/utils";
+import { getCurrentLocation, getStoreMarkerIcon } from "../../utils/utils";
 import { Store } from "../../data/types";
+import { StoreMarker } from "../StoreMarker/StoreMarker";
 
 const currentLocationIcon = new Icon({
   iconUrl: pinLocationIcon,
@@ -56,24 +57,17 @@ export const MapView = ({
     [currentLocation?.coords.accuracy]
   );
 
-  const findCurrentLocation = useCallback(() => {
-    const geolocation = navigator.geolocation;
-    if (!geolocation) {
-      setCurrentLocation(null);
-      setLocationError("Geolocation error: Geolocation is not supported!");
-      return;
-    }
-    geolocation.getCurrentPosition(
-      (p) => setCurrentLocation(p),
-      (e) => {
+  const moveToCurrentLocation = useCallback(() => {
+    getCurrentLocation(
+      (position) => setCurrentLocation(position),
+      (error) => {
         setCurrentLocation(null);
-        setLocationError(`Geolocation error: ${e.message}`);
-      },
-      { enableHighAccuracy: true }
+        setLocationError(error);
+      }
     );
   }, []);
 
-  useEffect(() => findCurrentLocation(), [findCurrentLocation]);
+  useEffect(() => moveToCurrentLocation(), [moveToCurrentLocation]);
 
   return (
     <>
@@ -90,7 +84,7 @@ export const MapView = ({
         {/* A Button for centering the map to the current location */}
         <Button
           className="absolute icon-button top-right"
-          onClick={findCurrentLocation}
+          onClick={moveToCurrentLocation}
           disabled={!currentLocation}
         >
           <FontAwesomeIcon
@@ -110,8 +104,7 @@ export const MapView = ({
                 Accuracy: {currentLocationAccuracy?.toFixed(1)} meters
               </Popup>
             </Marker>
-
-            {/* Recenters the map on the provided location */}
+            {/* Recenters the map on the provided position */}
             <Recenter position={currentLocationCoords} />
             {/* Showing a Circle around the current location to represent how accurate it is */}
             <Circle
@@ -122,9 +115,9 @@ export const MapView = ({
           </>
         )}
 
-        {/* Rendering the Store Markers to represent the actual store locations on the map (with different colors based on product availability) */}
+        {/* Rendering the Store Markers to represent the actual store locations on the map which offer the selected product (with different colors based on product availability / distance) */}
         {selectedProduct
-          ? stores.map((store) => {
+          ? stores.map((store, i) => {
               const storeHasProduct =
                 selectedProduct && store.products?.includes(selectedProduct);
 
@@ -132,32 +125,12 @@ export const MapView = ({
                 storeHasProduct ? "yellow" : "red"
               );
               return (
-                <Marker
-                  key={store.id}
-                  position={[store.latitude, store.longitude]}
+                <StoreMarker
+                  key={i}
+                  store={store}
                   icon={icon}
-                >
-                  <Tooltip direction="bottom">{store.address}</Tooltip>
-                  <Popup>
-                    <strong>{store.name}</strong>
-                    <br />
-                    {store.address}
-                    <div style={{ marginTop: 10 }}>
-                      <strong>Available products:</strong>
-                      <div>
-                        {store.products?.map((p, i) => (
-                          <li key={i}>
-                            {p === selectedProduct ? (
-                              <mark>{p}</mark>
-                            ) : (
-                              <span>{p}</span>
-                            )}
-                          </li>
-                        ))}
-                      </div>
-                    </div>
-                  </Popup>
-                </Marker>
+                  selectedProduct={selectedProduct}
+                />
               );
             })
           : undefined}
