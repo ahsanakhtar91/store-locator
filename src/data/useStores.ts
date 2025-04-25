@@ -1,4 +1,4 @@
-import { Store } from "../types/types";
+import { Store } from "./types";
 
 // A hook, returning the dummy payload (data of some sample stores, including address and the products it offers)
 export const useStores = (): Store[] => {

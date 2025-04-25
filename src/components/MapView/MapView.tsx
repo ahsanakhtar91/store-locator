@@ -16,7 +16,7 @@ import { Button } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocation } from "@fortawesome/free-solid-svg-icons";
 import { getStoreMarkerIcon } from "../../utils/utils";
-import { Store } from "../../types/types";
+import { Store } from "../../data/types";
 
 const currentLocationIcon = new Icon({
   iconUrl: pinLocationIcon,
@@ -26,11 +26,19 @@ const currentLocationIcon = new Icon({
   popupAnchor: [0, -12],
 });
 
-export const MapView = ({ stores }: { stores: Store[] }) => {
+const regionPakistan = { lat: 31.5, lng: 72.8 };
+
+export const MapView = ({
+  stores,
+  selectedProduct,
+}: {
+  stores: Store[];
+  selectedProduct?: string;
+}) => {
   const [currentLocation, setCurrentLocation] =
     useState<GeolocationPosition | null>(null);
 
-  const [error, setError] = useState<string | null>(null);
+  const [locationError, setLocationError] = useState<string | null>(null);
 
   const currentLocationCoords: LatLngTuple | null = useMemo(
     () =>
@@ -52,14 +60,14 @@ export const MapView = ({ stores }: { stores: Store[] }) => {
     const geolocation = navigator.geolocation;
     if (!geolocation) {
       setCurrentLocation(null);
-      setError("Geolocation error: Geolocation is not supported!");
+      setLocationError("Geolocation error: Geolocation is not supported!");
       return;
     }
     geolocation.getCurrentPosition(
       (p) => setCurrentLocation(p),
       (e) => {
         setCurrentLocation(null);
-        setError("Geolocation error: " + e.message);
+        setLocationError(`Geolocation error: ${e.message}`);
       },
       { enableHighAccuracy: true }
     );
@@ -67,11 +75,9 @@ export const MapView = ({ stores }: { stores: Store[] }) => {
 
   useEffect(() => findCurrentLocation(), [findCurrentLocation]);
 
-  const regionPakistan = { lat: 31.5, lng: 72.8 };
-
   return (
     <>
-      {error && <div className="error">{error}</div>}
+      {locationError && <div className="error">{locationError}</div>}
       <MapContainer
         center={currentLocationCoords ?? regionPakistan}
         zoom={currentLocationCoords ? 15 : 6}

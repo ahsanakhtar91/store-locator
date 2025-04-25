@@ -6,13 +6,29 @@
 
 .header {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px;
+  gap: 10px;
 }
 
 .app-name {
   font-size: 20px;
   font-weight: 600;
+}
+
+.products-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.products-dropdown .label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.products-dropdown .ant-select {
+  min-width: 150px;
 }
