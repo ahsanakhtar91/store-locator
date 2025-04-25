@@ -123,40 +123,44 @@ export const MapView = ({
         )}
 
         {/* Rendering the Store Markers to represent the actual store locations on the map (with different colors based on product availability) */}
-        {stores.map((store) => {
-          const storeHasProduct =
-            selectedProduct && store.products?.includes(selectedProduct);
+        {selectedProduct
+          ? stores.map((store) => {
+              const storeHasProduct =
+                selectedProduct && store.products?.includes(selectedProduct);
 
-          const icon = getStoreMarkerIcon(storeHasProduct ? "yellow" : "red");
-          return (
-            <Marker
-              key={store.id}
-              position={[store.latitude, store.longitude]}
-              icon={icon}
-            >
-              <Tooltip direction="bottom">{store.address}</Tooltip>
-              <Popup>
-                <strong>{store.name}</strong>
-                <br />
-                {store.address}
-                <div style={{ marginTop: 10 }}>
-                  <strong>Available products:</strong>
-                  <div>
-                    {store.products?.map((p, i) => (
-                      <li key={i}>
-                        {p === selectedProduct ? (
-                          <mark>{p}</mark>
-                        ) : (
-                          <span>{p}</span>
-                        )}
-                      </li>
-                    ))}
-                  </div>
-                </div>
-              </Popup>
-            </Marker>
-          );
-        })}
+              const icon = getStoreMarkerIcon(
+                storeHasProduct ? "yellow" : "red"
+              );
+              return (
+                <Marker
+                  key={store.id}
+                  position={[store.latitude, store.longitude]}
+                  icon={icon}
+                >
+                  <Tooltip direction="bottom">{store.address}</Tooltip>
+                  <Popup>
+                    <strong>{store.name}</strong>
+                    <br />
+                    {store.address}
+                    <div style={{ marginTop: 10 }}>
+                      <strong>Available products:</strong>
+                      <div>
+                        {store.products?.map((p, i) => (
+                          <li key={i}>
+                            {p === selectedProduct ? (
+                              <mark>{p}</mark>
+                            ) : (
+                              <span>{p}</span>
+                            )}
+                          </li>
+                        ))}
+                      </div>
+                    </div>
+                  </Popup>
+                </Marker>
+              );
+            })
+          : undefined}
       </MapContainer>
     </>
   );
