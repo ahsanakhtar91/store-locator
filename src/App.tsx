@@ -8,8 +8,10 @@ export default function App() {
   const stores = useStores();
 
   const allUniqueProducts = Array.from(
-    new Set(stores.flatMap((s) => s.products))
+    new Set(stores.flatMap((s) => s.products ?? []))
   );
+
+  const extraUnavailableProducts = ["Mouse", "Keyboard"];
 
   const [selectedProduct, setSelectedProduct] = useState();
 
@@ -21,7 +23,9 @@ export default function App() {
           <span className="label">Select a product</span>
           <Select
             allowClear
-            options={allUniqueProducts.map((p) => ({ value: p, label: p }))}
+            options={[...allUniqueProducts, ...extraUnavailableProducts].map(
+              (p) => ({ value: p, label: p })
+            )}
             placeholder="Choose any"
             onChange={setSelectedProduct}
           />
