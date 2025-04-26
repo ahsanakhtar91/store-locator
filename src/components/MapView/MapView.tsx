@@ -15,11 +15,7 @@ import pinLocationIcon from "../../icons/pinLocation.svg";
 import { Button } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocation } from "@fortawesome/free-solid-svg-icons";
-import {
-  getCurrentLocation,
-  getStoreMarkerIcon,
-  haversine,
-} from "../../utils/utils";
+import { getCurrentLocation, haversine } from "../../utils/utils";
 import { Store, StoreWithDistance } from "../../data/types";
 import { StoreMarker } from "../StoreMarker/StoreMarker";
 
@@ -42,7 +38,6 @@ export const MapView = ({
 }) => {
   const [currentLocation, setCurrentLocation] = useState<GeolocationPosition>();
   const [locationError, setLocationError] = useState<string>();
-  const [nearestStoreCoords, setNearestStoreCoords] = useState<LatLngTuple>();
 
   const currentLocationCoords: LatLngTuple | null = useMemo(
     () =>
@@ -61,7 +56,9 @@ export const MapView = ({
 
   const moveToCurrentLocation = useCallback(() => {
     getCurrentLocation(
-      (position) => setCurrentLocation(position),
+      (position) => {
+        setCurrentLocation(position);
+      },
       (error) => {
         setCurrentLocation(undefined);
         setLocationError(error);
@@ -93,9 +90,7 @@ export const MapView = ({
       .sort((a, b) => a.distance - b.distance);
 
     return storesSortedByDistance[0];
-  }, [currentLocationCoords, selectedProduct]);
-
-  console.log(nearestStore);
+  }, [currentLocationCoords, selectedProduct, stores]);
 
   return (
     <>
@@ -132,8 +127,8 @@ export const MapView = ({
                 Accuracy: {currentLocationAccuracy?.toFixed(1)} meters
               </Popup>
             </Marker>
-            {/* Recenters the map on the provided position (either nearest store location or the user's current location) */}
-            <Recenter position={nearestStoreCoords ?? currentLocationCoords} />
+            {/* Recenters the map on the provided coordinates */}
+            <Recenter position={currentLocationCoords} />
             {/* Showing a Circle around the current location to represent how accurate it is */}
             <Circle
               center={currentLocationCoords}
@@ -145,22 +140,15 @@ export const MapView = ({
 
         {/* Rendering the Store Markers to represent the actual store locations on the map which offer the selected product (with different colors based on product availability / distance) */}
         {selectedProduct
-          ? stores.map((store, i) => {
-              const storeHasProduct =
-                selectedProduct && store.products?.includes(selectedProduct);
-
-              const icon = getStoreMarkerIcon(
-                storeHasProduct ? "yellow" : "red"
-              );
-              return (
-                <StoreMarker
-                  key={i}
-                  store={store}
-                  icon={icon}
-                  selectedProduct={selectedProduct}
-                />
-              );
-            })
+          ? stores.map((store, i) => (
+              <StoreMarker
+                key={i}
+                store={store}
+                selectedProduct={selectedProduct}
+                isStoreNearest={nearestStore?.id === store.id}
+                distanceOfNearest={nearestStore?.distance ?? 0}
+              />
+            ))
           : undefined}
       </MapContainer>
     </>

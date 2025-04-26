@@ -1,4 +1,4 @@
-import { Icon, LatLng, LatLngTuple } from "leaflet";
+import { Icon, LatLngTuple } from "leaflet";
 import markerShadowUrl from "leaflet/dist/images/marker-shadow.png";
 
 export const getCurrentLocation = (
@@ -17,9 +17,9 @@ export const getCurrentLocation = (
   );
 };
 
-// "yellow": icon/marker for the store where product IS available
-// "green": icon/marker for the NEAREST store where product IS available
-// "red": icon/marker for the store where product is NOT available
+// "yellow": icon/marker for the store where the product IS available
+// "green": icon/marker for the NEAREST store where the product IS available
+// "red": icon/marker for the store where the product is NOT available
 export const getStoreMarkerIcon = (color: "yellow" | "green" | "red") => {
   const url = `https://maps.gstatic.com/mapfiles/ms2/micons/${color}-dot.png`;
   return new Icon({
