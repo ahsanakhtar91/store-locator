@@ -1,6 +1,6 @@
 import { Store } from "./types";
 
-// A hook, returning the dummy payload (data of some sample stores, including address and the products it offers)
+// A hook, returning the dummy payload (static data of some sample stores, including address and the products it offers)
 export const useStores = (): Store[] => {
   return [
     {

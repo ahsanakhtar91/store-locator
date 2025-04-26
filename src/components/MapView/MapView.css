@@ -1,10 +1,14 @@
-.error {
+.error, .nearest-store {
   display: flex;
   justify-content: center;
   font-weight: 600;
   font-size: 16px;
   color: #ff0000;
   margin-bottom: 10px;
+}
+
+.nearest-store {
+  color: #2eb72e;
 }
 
 .leaflet-container {

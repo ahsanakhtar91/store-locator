@@ -99,6 +99,11 @@ export const MapView = ({
   return (
     <>
       {locationError && <div className="error">{locationError}</div>}
+      {nearestStore && (
+        <div className="nearest-store">
+          Nearest Store Address: {nearestStore.address}
+        </div>
+      )}
       <MapContainer center={initialMapCenter} zoom={initialMapZoom}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
