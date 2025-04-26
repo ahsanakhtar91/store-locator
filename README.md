@@ -1,6 +1,6 @@
 # 🗺️ Store Locator (React App)
 
-Displays an interactive **OpenStreetMap** interface, built with **react-leaflet**, **React** and **TypeScript**. It highlights the 🟢 **nearest store** that has the requested product, along with all other provided store locations where the product is either 🟡 *available* or 🔴 *out of stock*.
+Displays an interactive **OpenStreetMap** interface, built with **react-leaflet**, **React** and **TypeScript** (responsive for all screen sizes). It highlights the 🟢 **nearest store** that has the requested product, along with all other provided store locations where the product is either 🟡 *available* or 🔴 *out of stock*.
 
 ⚛️ **Live Demo**: **https://store-locator-react.netlify.app**
 
