@@ -1,8 +1,8 @@
 # 🗺️ Store Locator
 
-Displays, in real time, an interactive **OpenStreetMap** interface—built with **React** and **TypeScript**—that highlights the 🟢 **nearest store** stocking the requested product, along with all other provided store locations where the item is either 🟡 *available* or 🔴 *out of stock*.
+Displays, in real-time, an interactive **OpenStreetMap** interface, built with **React** and **TypeScript**, that highlights the 🟢 **nearest store** stocking the requested product, along with all other provided store locations where the item is either 🟡 *available* or 🔴 *out of stock*.
 
-🔴 **Live Demo**: https://store-locator-react.netlify.app
+⚛️ **Live Demo**: https://store-locator-react.netlify.app
 
 📹 **Loom Walk‑through**: https://www.loom.com/share/64c3eca3042c4e2293b2ab826c5437a0
 
@@ -94,7 +94,7 @@ yarn start
 
 ---
 
-🔴 **Live Demo**: https://store-locator-react.netlify.app
+⚛️ **Live Demo**: https://store-locator-react.netlify.app
 
 📹 **Loom Walk‑through**: https://www.loom.com/share/64c3eca3042c4e2293b2ab826c5437a0
 
