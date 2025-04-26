@@ -50,6 +50,7 @@ Displays an interactive **OpenStreetMap** interface, built with **react-leaflet*
     │
     └── icons/               # A custom "pinLocation.svg" icon is present here.
 
+---
 
 ## 📝 Questions/Answers
 
