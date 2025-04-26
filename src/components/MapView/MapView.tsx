@@ -27,8 +27,6 @@ const currentLocationIcon = new Icon({
   popupAnchor: [0, -12],
 });
 
-const regionPakistan = { lat: 31.5, lng: 72.8 };
-
 export const MapView = ({
   stores,
   selectedProduct,
@@ -92,13 +90,16 @@ export const MapView = ({
     return storesSortedByDistance[0];
   }, [currentLocationCoords, selectedProduct, stores]);
 
+  // When current location is not available, map centers on this default lat/lng with zoom=6, this shows the whole region of "Pakistan" on the map
+  const pakistanCenterCoords = { lat: 31.5, lng: 72.8 };
+
+  const initialMapCenter = currentLocationCoords ?? pakistanCenterCoords;
+  const initialMapZoom = currentLocationCoords ? 15 : 6;
+
   return (
     <>
       {locationError && <div className="error">{locationError}</div>}
-      <MapContainer
-        center={currentLocationCoords ?? regionPakistan}
-        zoom={currentLocationCoords ? 15 : 6}
-      >
+      <MapContainer center={initialMapCenter} zoom={initialMapZoom}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -14,7 +14,8 @@ export const useStores = (): Store[] => {
     {
       id: 2,
       name: "iFocus | The Exclusive Apple Store",
-      address: "Office #3, Ground Floor, Azeem Mention, AKM Fazl-ul-Haq Rd, Islamabad, Pakistan",
+      address:
+        "Office #3, Ground Floor, Azeem Mention, AKM Fazl-ul-Haq Rd, Islamabad, Pakistan",
       latitude: 33.7157856,
       longitude: 73.0697166,
       products: ["Laptop", "Macbook", "Smartwatch", "Camera"],
@@ -43,6 +44,14 @@ export const useStores = (): Store[] => {
       latitude: 33.6623637,
       longitude: 73.0699509,
       products: ["iMac", "Macbook", "Smartwatch", "Laptop"],
+    },
+    {
+      // No products in this last store
+      id: 6,
+      name: "Laptop Station",
+      address: "Dubai Tower, Lehtrar Road, Islamabad, Pakistan",
+      latitude: 33.6290436,
+      longitude: 73.1167717,
     },
   ];
 };

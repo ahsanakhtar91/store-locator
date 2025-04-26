@@ -4,7 +4,7 @@ export type Store = {
   address: string;
   latitude: number;
   longitude: number;
-  products: string[];
+  products?: string[];
 };
 
 export type StoreWithDistance = Store & { distance: number };

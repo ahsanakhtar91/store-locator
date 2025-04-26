@@ -52,14 +52,25 @@ export const StoreMarker = ({
           <span>{store.address}</span>
         </div>
         <div className="section">
-          <strong>Available products:</strong>
-          <div>
-            {store.products?.map((p, i) => (
-              <li key={i}>
-                {p === selectedProduct ? <mark>{p}</mark> : <span>{p}</span>}
-              </li>
-            ))}
-          </div>
+          {store.products && store.products?.length > 0 ? (
+            <>
+              <strong>Available products:</strong>
+              <div>
+                {store.products?.map((p, i) => (
+                  <li key={i}>
+                    {p === selectedProduct ? (
+                      // Highlights the selectedProduct inside the popup as well
+                      <mark>{p}</mark>
+                    ) : (
+                      <span>{p}</span>
+                    )}
+                  </li>
+                ))}
+              </div>
+            </>
+          ) : (
+            <i>No products available</i>
+          )}
         </div>
       </Popup>
     </Marker>
