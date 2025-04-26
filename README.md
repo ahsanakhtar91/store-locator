@@ -16,10 +16,10 @@ Displays, in real time, an interactive **OpenStreetMap** interface—built with 
 | **Interactive map**                | Built with **React 18** + **react-leaflet**. Allows you to pan, zoom, explore and re-center with smooth animations on top of OpenStreetMap tiles.           |
 | **Current location detection**     | Uses `navigator.geolocation` to drop a blue pin + accuracy circle showing where you are.                       |
 | **Product selection**              | Ant Design `<Select>` (dropdown picker), lists all unique products across stores - markers only appear once a product is chosen.  |
-| **When you select a product**       | Map auto-centres to the **nearest store** marker, the marker shows an **address tooltip** - when you click on it, it opens a popup showing all details like **store name**, **address**, **list of available products** as well as the **distance in kilometers** (distance appears only in the nearest store marker's popup). |
+| **When you select a product**      | Map auto-centres to the **nearest store** marker, the marker shows an **address tooltip** - when you click on it, it opens a popup showing all details like **store name**, **address**, **list of available products** as well as the **distance in kilometers** (distance appears only in the nearest store marker's popup). |
 | **Colour-coded store markers**     | • 🟢 nearest store that *has* the item  • 🟡 other stores that *have* it  • 🔴 stores that don’t have it      |
 | **Nearest store calculation**      | Distance calculation via a custom **haversine** helper.  |
-| **Static data, no back-end involved**         | Six sample stores with realistic Lat/Lng + product lists live in `src/data/useStores.ts` — easy to extend     |
+| **Static data, no back-end**       | Six sample stores with realistic Lat/Lng. Stores list (with `products`) is present in `src/data/useStores.ts` — it is very easy to extend     |
 
 ---
 
@@ -47,20 +47,28 @@ Displays, in real time, an interactive **OpenStreetMap** interface—built with 
 #### Q3: How will you handle error conditions where the backend server fails to respond with data (e.g the API call fails with server error)?
 **A**: For now the front-end error of Geolocation is already handled in the app (shows a red banner on top). Now, after introducing the back-end APIs:
 * If data is not found, like if `products` key is empty or not available, this situation is also handled and won't crash the app.
-* If the API call fails with a server error, we can introduce toasts to inform the user about the error, something like **No stores found!** / **An error occurred!**. in such case, the dropdown can stay disabled, but the map can stay interactive.
+* If the API call fails with a server error, we can introduce toasts to inform the user about the error, something like **No stores found!** / **An error occurred!**. In such case, the drop-down can stay disabled, but the map can stay interactive.
 
-#### Q4: What needs to be done if you ask user to enter his/her current location by entering an address?
+#### Q4: What needs to be done if you ask user to enter his/her current location by entering an address? How will you implement the algorithm to calculate nearest store to user location given only as street, house number, town, zip code?
+**A**: These steps can be followed to implement this:
+* There should be a form on UI to accept four inputs **street**, **house number**, **town**, **zip code**.
+* Concatenate the data of all inputs into one string, lets say `address`.
+* Now, using Leaflet and pure JavaScript, make an HTTP request to `nominatim.openstreetmap.org` with `address` in query param named `q`:
+  * `https://nominatim.openstreetmap.org/search?format=json&q=' + address`
+* For example, hit this URL: https://nominatim.openstreetmap.org/search?format=json&q=Faisal%20Mosque,%2044000,%20Islamabad
+* The list of places (objects) will be returned, each having its proper `lat` (latitude) and `lon` (longitude). The first one can be picked.
+* Set the latitude/longitude recieved in the last stip into the `currentLocation` local state inside `src/components/MapView` component, and what's next is already in place inside this project.
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Steps to run the app
 
 ### Prerequisites
 
 - **Node >= 16**
 - **Yarn**
 
-### Installation
+### Clone & Run
 
 ```bash
 git clone https://github.com/ahsanakhtar91/store-locator.git
