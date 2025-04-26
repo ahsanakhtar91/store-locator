@@ -22,7 +22,7 @@ Displays, in real-time, an interactive **OpenStreetMap** interface, built with *
 
 ---
 
-## 🏗️ Tech Stack
+## 🛠️ Tech Stack
 
 | Layer     | Packages / Tools                                  |
 | --------- | ------------------------------------------------- |
